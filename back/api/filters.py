@@ -1,4 +1,3 @@
-
 ########### Caso queira um filtro duplo ################################
 import django_filters as df
 from django.db.models import Q
@@ -11,7 +10,7 @@ class AutorFilter(df.FilterSet):
     # ?nacionalidade=brasileira → compara case-insensitive (ex.: "Brasileira" == "brasileira")
     nacionalidade = df.CharFilter(field_name='nacionalidade', lookup_expr='iexact')
 
-    def filter_nome(self, qs, name, value: str):
+    def filter_nome(self, qs, value: str):
         if not value:
             return qs
         return qs.filter(Q(nome__icontains=value) | Q(sobrenome__icontains=value))
