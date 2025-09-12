@@ -5,15 +5,15 @@ from .models import Autor
 
 class AutorFilter(df.FilterSet):
     # ?nome=jorge  → procura em nome OU sobrenome (parcial, sem diferenciar maiúsc/minúsc)
-    nome = df.CharFilter(method='filter_nome')
+    autor = df.CharFilter(method='filter_nome')
 
     # ?nacionalidade=brasileira → compara case-insensitive (ex.: "Brasileira" == "brasileira")
-    nacionalidade = df.CharFilter(field_name='nacionalidade', lookup_expr='iexact')
+    nacio = df.CharFilter(field_name='nacio', lookup_expr='iexact')
 
-    def filter_nome(self, qs, value: str):
+    def filter_nome(self, queryset, name, value):
         if not value:
-            return qs
-        return qs.filter(Q(nome__icontains=value) | Q(sobrenome__icontains=value))
+            return queryset
+        return queryset.filter(Q(autor__icontains=value) | Q(s_autor__icontains=value))
 
     class Meta:
         model = Autor

@@ -50,8 +50,8 @@ class EditorasView(ListCreateAPIView):
     # permission_classes =[IsAuthenticated]
     
     filter_backends = [DjangoFilterBackend, SearchFilter]
-    filterset_fields = ['id', 'nome']
-    search_fields = ['nome']  
+    filterset_fields = ['id']
+    search_fields = ['autor', 's_autor']  
 
 class EditorasDetailView(RetrieveUpdateDestroyAPIView):
     queryset = Editora.objects.all()
