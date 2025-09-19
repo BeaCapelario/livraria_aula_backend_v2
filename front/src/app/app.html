@@ -1,11 +1,10 @@
-<header>
-  <nav style="background-color: blue;
-  display: flex;padding: 10px;gap: 2rem; align-items: center;">
-    <a routerLink="/" style="color: aliceblue;">Início</a>
-    <a routerLink="/autores" style="color: aliceblue;">Autores</a>
-    <a routerLink="/editoras" style="color: aliceblue;">Editoras</a>
-    <a routerLink="/livros" style="color: aliceblue;">Livros</a>
-    <button style="cursor: pointer;">Sair</button>
+<header style="border-bottom:1px solid #eee">
+  <nav style="max-width:900px;margin:0 auto;padding:1rem;display:flex;gap:1rem;align-items:center">
+    <a routerLink="/">Início</a>
+    <a routerLink="/autores">Autores</a>
+    <span style="flex:1"></span>
+    <button (click)="logout()" style="padding:.4rem .7rem;border:1px solid #ddd;border-radius:8px;background:#fff">Sair</button>
   </nav>
 </header>
 <main><router-outlet></router-outlet></main>
+
