@@ -1,7 +1,7 @@
 import { Injectable, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, tap } from 'rxjs';
-import { environment } from '../environments/environment';
+import { environments } from '../../environments/environments';
 
 type TokenPair = { access: string; refresh?: string };
 
@@ -15,7 +15,7 @@ const storage = {
 export class AuthService {
   private _access = signal<string | null>(storage.get('access'));
   private _refresh = signal<string | null>(storage.get('refresh'));
-  private base = environment.apiBase;
+  private base = environments.apiBase;
 
   constructor(private http: HttpClient) {}
 
