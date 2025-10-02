@@ -2,7 +2,7 @@ import { Component, inject, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { AutoresService } from '../../services/autores.services';
 import { Autor } from '../../models/autor';
-import { AuthService } from '../../services/auth.sevices';
+import { AuthService } from '../../services/auth.services';
 
 @Component({
   standalone: true,

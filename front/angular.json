@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "front": {
+    "front2": {
       "projectType": "application",
       "schematics": {},
       "root": "",
@@ -35,8 +35,7 @@
                   "replace": "src/environments/environments.ts",
                   "with": "src/environments/environments.prod.ts"
                 }
-              ],
-              "outputHashing": "all"
+              ]
             },
             "development": {
               "optimization": false,
@@ -50,10 +49,10 @@
           "builder": "@angular/build:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "front:build:production"
+              "buildTarget": "front2:build:production"
             },
             "development": {
-              "buildTarget": "front:build:development"
+              "buildTarget": "front2:build:development"
             }
           },
           "defaultConfiguration": "development"

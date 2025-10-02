@@ -7,3 +7,5 @@ export interface Autor {
     biogr?: string | null;
 }
 
+
+    
