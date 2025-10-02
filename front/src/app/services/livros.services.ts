@@ -10,7 +10,7 @@ export class LivrosService {
   private base = environments.apiBase;
   
   listar(): Observable<Livro[]> {
-    const url = `${this.base}api/editoras`;
+    const url = `${this.base}api/livros`;
     return this.http.get<Livro[]>(url);
   }
 }

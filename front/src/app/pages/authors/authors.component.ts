@@ -22,7 +22,7 @@ import { AuthService } from '../../services/auth.services';
               <strong>{{ a.autor }} {{ a.s_autor }}</strong>
               @if (a.nacio) { — <em style="color:#666">{{ a.nacio }}</em> }
               @if (a.nasc) { • {{ a.nasc }} }
-              @if (a.biogr) { <div style="color:#555">{{ a.biogr }}</div> }
+              @if (a.biogr) { <div style="color:#555">{{ a.biogr}}</div> }
             </li>
           }
         </ul>

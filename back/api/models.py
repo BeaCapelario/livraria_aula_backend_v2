@@ -22,9 +22,10 @@ class Editora(models.Model):
     site = models.URLField(null=True, blank=True)
 
     def __str__(self):
-        return self.nome
+        return self.editora
 
-    
+
+
 class Livro(models.Model):
     titulo = models.CharField(max_length=50)
     subtitulo = models.CharField(max_length=255)    
