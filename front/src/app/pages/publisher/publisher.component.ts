@@ -17,9 +17,16 @@ export class PublisherComponent {
   carregando = signal(true);
   erro = signal<string | null>(null);
 
+  token = this.auth.token
+
   constructor() {
       this.svc.listar().subscribe({
-      next: (data) => { this.editoras.set(data); this.carregando.set(false); },
+      next: (data) => { 
+        this.editoras.set(data); 
+        this.carregando.set(false); 
+        console.log("Token do Lindo: ", this.token());
+        
+      },
       error: () => { this.erro.set('Falha ao carregar editoras'); this.carregando.set(false); }
     });
   }

@@ -24,7 +24,7 @@ export class AuthService {
   token = () => this._access();
 
   login(username: string, password: string): Observable<TokenPair> {
-    const AUTH_URL = `${this.base}/token/`;
+    const AUTH_URL = `${this.base}api/token/`;
     
     
     return this.http.post<TokenPair>(AUTH_URL, { username, password }).pipe(

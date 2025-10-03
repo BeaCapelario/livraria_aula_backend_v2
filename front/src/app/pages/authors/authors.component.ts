@@ -7,32 +7,8 @@ import { AuthService } from '../../services/auth.services';
 @Component({
   standalone: true,
   imports: [RouterLink],
-  template: `
-    <section style="max-width:900px;margin:2rem auto;padding:0 1rem">
-      <h1>Autores</h1>
-
-      @if (carregando()) {
-        <p>Carregando…</p>
-      } @else if (erro()) {
-        <p style="color:#c62828">{{ erro() }}</p>
-      } @else {
-        <ul style="padding-left:1.25rem">
-          @for (a of autores(); track a.id) {
-            <li style="margin:.25rem 0">
-              <strong>{{ a.autor }} {{ a.s_autor }}</strong>
-              @if (a.nacio) { — <em style="color:#666">{{ a.nacio }}</em> }
-              @if (a.nasc) { • {{ a.nasc }} }
-              @if (a.biogr) { <div style="color:#555">{{ a.biogr }}</div> }
-            </li>
-          }
-        </ul>
-      }
-
-      <nav style="margin-top:1rem">
-        <a routerLink="/">Voltar ao início</a>
-      </nav>
-    </section>
-  `
+  templateUrl:'./authors.component.html' ,
+  styleUrl: './authors.component.css'
 })
 export class AutoresPage {
   private svc = inject(AutoresService);
