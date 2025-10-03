@@ -1,0 +1,27 @@
+	<section class="bg-purple-600 max-w-sm mx-auto mt-12 px-4">
+    <h1 class="mb-4 text-2xl font-bold">Entrar</h1>
+
+    <form [formGroup]="form" (ngSubmit)="onSubmit()" novalidate class="space-y-4 ">
+      <div class="flex flex- gap-3 ">
+        <label class="block text sm font-medium text-white">
+          Usuário
+          <input formControlName="username" autocomplete="username" />
+        </label>
+
+        <label class="block text sm font-medium text-white">
+          Senha
+          <input type="password" formControlName="password" autocomplete="current-password" class="mt-1 block w-full rounded border border-gray-300 px-3 py-0.5" />
+        </label>
+
+        <button type="submit" [disabled]="form.invalid || loading()">Entrar</button>
+      </div>
+    </form>
+
+    @if (error()) {
+      <p>{{ error() }}</p>
+    }
+
+    <p>
+      <a routerLink="/">Voltar</a>
+    </p>
+  </section>

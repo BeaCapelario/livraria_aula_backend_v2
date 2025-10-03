@@ -4,7 +4,6 @@ import { EditorasService } from '../../services/editoras.services';
 import { Editora } from '../../models/editora';
 import { AuthService } from '../../services/auth.services';
 
-
 @Component({
   selector: 'app-publisher.component',
   imports: [RouterLink],
@@ -17,6 +16,8 @@ export class PublisherComponent {
   editoras = signal<Editora[]>([]);
   carregando = signal(true);
   erro = signal<string | null>(null);
+
+token = this.auth.token
 
   constructor() {
       this.svc.listar().subscribe({
