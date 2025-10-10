@@ -1,11 +1,12 @@
 from django.shortcuts import render
 from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView, CreateAPIView
-from .models import Autor, Editora, Livro
-from .serializers import AutorSerializer, EditoraSerializer, LivroSerializer, RegisterSerializer
+from .models import Autor, Editora, Livro, Imagem
+from .serializers import AutorSerializer, EditoraSerializer, LivroSerializer, RegisterSerializer, ImagemSerializer
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
-from rest_framework.permissions import AllowAny, IsAuthenticated
+from rest_framework.permissions import AllowAny, IsAuthenticated, IsAuthenticatedOrReadOnly
+from rest_framework.viewsets import ModelViewSet
 
 from rest_framework_simplejwt.tokens import RefreshToken
 
@@ -32,7 +33,7 @@ def listar_autores(request):
 class AutoresView(ListCreateAPIView):
     queryset = Autor.objects.all()
     serializer_class = AutorSerializer
-    # permission_classes =[IsAuthenticated]
+    permission_classes =[IsAuthenticated]
     
     filter_backends = [DjangoFilterBackend, SearchFilter]
     filterset_fields = ['id', 'autor', 's_autor']      # Permite o filtro exato
@@ -84,4 +85,8 @@ class RegisterView(CreateAPIView):
             'tokens': {'refresh': str(refresh), 'access': str(refresh.access_token)}
         }, status=status.HTTP_201_CREATED)
         
-    
+
+class ImagemViewSet(ModelViewSet):
+    queryset = Imagem.objects.all().order_by("criado_em")
+    serializer_class = ImagemSerializer
+    permission_classes = [IsAuthenticatedOrReadOnly]

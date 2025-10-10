@@ -46,4 +46,9 @@ class Livro(models.Model):
         return self.titulo
     
 
+class Imagem(models.Model):
+    imagem = models.ImageField(upload_to="upload/%Y%m%d/")
+    criado_em = models.DateTimeField(auto_now_add=True)
 
+    def __str__(self):
+        return f"Imagem #{self.pk}"

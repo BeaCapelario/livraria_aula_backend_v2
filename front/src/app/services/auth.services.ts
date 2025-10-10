@@ -16,13 +16,13 @@ export class AuthService {
   private _access = signal<string | null>(storage.get('access'));
   private _refresh = signal<string | null>(storage.get('refresh'));
   private base = environment.apiBase;
-
+  
   constructor(private http: HttpClient) {}
-
+  
   isAuthenticated = () => !!this._access();
-
+  
   token = () => this._access();
-
+  
   login(username: string, password: string): Observable<TokenPair> {
     const AUTH_URL = `${this.base}api/token/`;
     
@@ -37,7 +37,7 @@ export class AuthService {
   }
   
   refresh(): Observable<{ access: string }> {
-    const REFRESH_URL = `${this.base}/refresh/`;
+    const REFRESH_URL = `${this.base}api/refresh/`;
     const refresh = this._refresh();
     return this.http.post<{ access: string }>(REFRESH_URL, { refresh }).pipe(
       tap(t => { this._access.set(t.access); storage.set('access', t.access); })
