@@ -2,7 +2,6 @@ from django.shortcuts import render
 from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView, CreateAPIView
 from .models import Autor, Editora, Livro, Imagem
 from .serializers import AutorSerializer, EditoraSerializer, LivroSerializer, RegisterSerializer, ImagemSerializer
-from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.permissions import AllowAny, IsAuthenticated, IsAuthenticatedOrReadOnly
@@ -15,6 +14,9 @@ from .filters import AutorFilter
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import SearchFilter
 
+# Livros
+from rest_framework.parsers import MultiPartParser, FormParser
+from rest_framework.decorators import api_view, action
 
 @api_view(['GET', 'POST'])
 def listar_autores(request):
@@ -59,10 +61,22 @@ class EditorasDetailView(RetrieveUpdateDestroyAPIView):
     serializer_class = EditoraSerializer
     permission_classes =[IsAuthenticated]
 
-class LivrosView(ListCreateAPIView):
-    queryset = Livro.objects.all()
+class LivrosView(ModelViewSet):
+    queryset = Livro.objects.all().order_by("-id")
     serializer_class = LivroSerializer
-    # permission_classes =[IsAuthenticated]
+    parser_classes = [MultiPartParser, FormParser]  # aceita multipart
+
+    @action(detail=True, methods=["post"], parser_classes=[MultiPartParser, FormParser])
+    def capa(self, request, pk=None):
+        """POST /api/livros/{id}/capa/ com campo 'capa' (arquivo)"""
+        livro = self.get_object()
+        arquivo = request.FILES.get("capa")
+        if not arquivo:
+            return Response({"detail":"Arquivo 'capa' é obrigatório."},
+                            status=status.HTTP_400_BAD_REQUEST)
+        livro.capa = arquivo
+        livro.save(update_fields=["capa"])
+        return Response(self.get_serializer(livro).data, status=status.HTTP_200_OK)
 
 class LivrosDetailView(RetrieveUpdateDestroyAPIView):
     queryset = Livro.objects.all()
