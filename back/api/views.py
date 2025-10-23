@@ -97,19 +97,43 @@ class ImagemViewSet(ModelViewSet):
     permission_classes = [IsAuthenticatedOrReadOnly]
 
 
+from rest_framework.viewsets import ModelViewSet
+from rest_framework.decorators import action
+from rest_framework.response import Response
+from rest_framework import status
+from rest_framework.parsers import MultiPartParser, FormParser
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework.filters import SearchFilter, OrderingFilter
+
+from .models import Livro
+from .serializers import LivroSerializer
+
+
 class LivroViewSet(ModelViewSet):
-    queryset = Livro.objects.all().order_by("-id")
+    queryset = Livro.objects.select_related("autor").order_by("-id")
     serializer_class = LivroSerializer
-    parser_classes = [MultiPartParser, FormParser]  # aceita multipart
+    parser_classes = [MultiPartParser, FormParser]
+
+    # filtros / busca / ordenação
+    filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
+    search_fields = ["titulo", "autor__nome", "autor__sobrenome"]
+    ordering_fields = ["id", "titulo"]
+    ordering = ["titulo"]
 
     @action(detail=True, methods=["post"], parser_classes=[MultiPartParser, FormParser])
     def capa(self, request, pk=None):
-        """POST /api/livros/{id}/capa/ com campo 'capa' (arquivo)"""
+        """
+        POST /api/livros/{id}/capa/
+        FormData: campo 'capa' (arquivo)
+        """
         livro = self.get_object()
         arquivo = request.FILES.get("capa")
         if not arquivo:
-            return Response({"detail":"Arquivo 'capa' é obrigatório."},
-                            status=status.HTTP_400_BAD_REQUEST)
+            return Response(
+                {"detail": "Arquivo 'capa' é obrigatório."},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
         livro.capa = arquivo
         livro.save(update_fields=["capa"])
         return Response(self.get_serializer(livro).data, status=status.HTTP_200_OK)

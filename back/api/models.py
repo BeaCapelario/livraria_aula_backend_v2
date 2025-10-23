@@ -4,7 +4,7 @@ import os, uuid
 
 def path_capa(_, filename):
     ext = os.path.splitext(filename)
-    return f"capas/{uuid.uuid4().hex}{ext.lower()}"
+    return f"capas/{uuid.uuid4().hex}{ext}"
 
 class Autor(models.Model):
     autor = models.CharField(max_length=100)
