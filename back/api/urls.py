@@ -15,7 +15,7 @@ urlpatterns = [
     path('editoras', EditorasView.as_view()),
     path('editora/<int:pk>', EditorasDetailView.as_view()),
    
-    path('livros', LivrosView.as_view()),
+    path('livros/', LivrosView.as_view()),
     path('livro/<int:pk>', LivrosDetailView.as_view()),
     
     path('token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
