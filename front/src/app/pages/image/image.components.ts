@@ -7,7 +7,7 @@ import { environment } from '../../../environments/environments.prod';
   standalone: true,
   selector: 'app-imagens',
   imports: [CommonModule],
-  templateUrl: './images.component.html',
+  templateUrl: './image.components.html',
 })
 
 export class ImagensComponent {
@@ -17,14 +17,6 @@ export class ImagensComponent {
   arquivo: File | null = null;
   preview: string | null = null;
   apiBase = environment.apiBase
-
-  // constructor() {
-  //   // ajuste se quiser compor url absoluta manualmente
-  //   const base = (window as any).ENV_API_BASE ?? '';
-  //   this.apiBase = base.replace(/\/+$/,'').replace(/\/api$/,'') || 'http://127.0.0.1:8000';
-
-  //   this.carregar();
-  // }
 
   carregar() {
     this.svc.listar().subscribe({
