@@ -1,20 +1,31 @@
-########### Caso queira um filtro duplo ################################
 import django_filters as df
 from django.db.models import Q
-from .models import Autor
+from .models import Autor, Livro, Editora
+
+class LivroFilter(df.FilterSet):
+    id = df.NumberFilter(field_name='id', lookup_expr='exact')
+    titulo = df.CharFilter(field_name='titulo', lookup_expr='icontains')
+    subtitulo = df.CharFilter(field_name='subtitulo', lookup_expr='icontains')
+    autor = df.CharFilter(field_name='autor', lookup_expr='icontains')
+
+    class Meta:
+        model = Livro
+        fields = []
 
 class AutorFilter(df.FilterSet):
-    # ?nome=jorge  → procura em nome OU sobrenome (parcial, sem diferenciar maiúsc/minúsc)
-    autor = df.CharFilter(method='filter_nome')
-
-    # ?nacionalidade=brasileira → compara case-insensitive (ex.: "Brasileira" == "brasileira")
-    nacio = df.CharFilter(field_name='nacio', lookup_expr='iexact')
-
-    def filter_nome(self, queryset, name, value):
-        if not value:
-            return queryset
-        return queryset.filter(Q(autor__icontains=value) | Q(s_autor__icontains=value))
+    id = df.NumberFilter(field_name='id', lookup_expr='exact')
+    autor = df.CharFilter(field_name='autor', lookup_expr='icontains')
+    s_autor = df.CharFilter(field_name='s_autor', lookup_expr='icontains')
+    nasc = df.CharFilter(field_name='nasc', lookup_expr='iexact')
 
     class Meta:
         model = Autor
-        fields = []  # usamos os campos customizados acima
+        fields = []
+        
+class EditoraFilter(df.FilterSet):
+    id = df.NumberFilter(field_name='id', lookup_expr='exact')
+    editora = df.CharFilter(field_name='editora', lookup_expr='icontains')
+
+    class Meta:
+        model = Editora
+        fields = []

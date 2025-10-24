@@ -12,6 +12,7 @@ from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import SearchFilter, OrderingFilter
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.parsers import MultiPartParser, FormParser
+from .filters import AutorFilter, EditoraFilter, LivroFilter
 
 @api_view(['GET', 'POST'])
 def listar_autores(request):
@@ -27,55 +28,77 @@ def listar_autores(request):
         else:
             return Response(serializers.errors, status=status.HTTP_400_BAD_REQUEST)
 
+########################## AUTORES VIEWS #############################
+
 class AutoresView(ListCreateAPIView):
     queryset = Autor.objects.all()
     serializer_class = AutorSerializer
     # permission_classes =[IsAuthenticated]
     filter_backends = [DjangoFilterBackend, SearchFilter]
-    # filterset_fields = ['id']               # Permite o filtro exato
-    # search_fields = ['nome', 'sobrenome']   # busca parcial: ?search=Jorge
-    filterset_class = AutorFilter           # Caso queira filtro duplo "Nome" e "Nacionalidade"
-    
+    filterset_fields = ['id']               
+    search_fields = ['autor', 's_autor', 'nasc']  
+    ordering_fields = ['id', 'autor'] 
+    ordering = ['autor']
+    filterset_class = AutorFilter  
+
+####################### AUTORES DETAIL VIEWS ##########################
+
 class AutoresDetailView(RetrieveUpdateDestroyAPIView):
     queryset = Autor.objects.all()
     serializer_class = AutorSerializer
     permission_classes =[IsAuthenticated]
+
+########################### EDITORAS VIEW ##############################
 
 class EditorasView(ListCreateAPIView):
     queryset = Editora.objects.all()
     serializer_class = EditoraSerializer
     # permission_classes =[IsAuthenticated]
     filter_backends = [DjangoFilterBackend, SearchFilter]
-    filterset_fields = ['id', 'nome']
-    search_fields = ['nome']  
+    filterset_fields = ['id', 'editora']
+    search_fields = ['editora']
+    ordering_fields = ['id', 'editora'] 
+    ordering = ['editora']
+    filterset_class = EditoraFilter
+
+######################### EDITORAS DETAIL VIEW ####################################
 
 class EditorasDetailView(RetrieveUpdateDestroyAPIView):
     queryset = Editora.objects.all()
     serializer_class = EditoraSerializer
     permission_classes =[IsAuthenticated]
 
+######################### LIVROS VIEW ####################################
+
 class LivrosView(ListCreateAPIView):
-    queryset = Livro.objects.all().select_related('autor')
+    queryset = Livro.objects.all()
     serializer_class = LivroSerializer
     filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
-    search_fields = ['titulo', 'autor__nome', 'autor__sobrenome']
+    filterset_fields = ['id']
+    search_fields = ['titulo', 'subtitulo', 'autor']
     ordering_fields = ['id', 'titulo']
     ordering = ['titulo']
+    filterset_class = LivroFilter
 
+####################### LIVROS DETAIL VIEWS ######################################
 
 class LivrosDetailView(RetrieveUpdateDestroyAPIView):
     queryset = Livro.objects.all()
     serializer_class = LivroSerializer
     # permission_classes =[IsAuthenticated]
 
+####################### LIVROS VIEW SET ######################################
+
 class LivroViewSet(ModelViewSet):
     queryset = Livro.objects.all().select_related('autor')
     serializer_class = LivroSerializer
-    filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
+    # filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
     # se você criou o LivroFilter com autor/titulo:
-    search_fields = ['titulo', 'autor__nome', 'autor__sobrenome']
-    ordering_fields = ['id', 'titulo']
-    ordering = ['titulo']
+    # search_fields = ['titulo', 'autor__nome', 'autor__sobrenome']
+    # ordering_fields = ['id', 'titulo']
+    # ordering = ['titulo']
+
+######################## REGISTER VIEW #####################################
 
 class RegisterView(CreateAPIView):
     permission_classes = [AllowAny]
@@ -91,11 +114,14 @@ class RegisterView(CreateAPIView):
             'tokens': {'refresh': str(refresh), 'access': str(refresh.access_token)}
         }, status=status.HTTP_201_CREATED)
             
+####################### IMAGEM VIEW SET ######################################
+
 class ImagemViewSet(ModelViewSet):
     queryset = Imagem.objects.all().order_by("-criado_em")
     serializer_class = ImagemSerializer
     permission_classes = [IsAuthenticatedOrReadOnly]
 
+#############################################################
 
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.decorators import action
